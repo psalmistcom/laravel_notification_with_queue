@@ -10,9 +10,17 @@ use Illuminate\Support\Facades\Notification;
 class HomeController extends Controller
 {
     public function index() {
-        $user = User::first();
+        $users = User::get();
 
-        Notification::send($user, new WelcomeNotification);
+        $post = [
+            'title'=> 'Post title', 
+            'slug' => 'post-slug'
+        ];
+
+        foreach($users as $user){
+            $user->notify(new WelcomeNotification($post));
+            // Notification::send($user, new WelcomeNotification($post));
+        }
         dd('done');
         // return view('welcome');
     }
